@@ -16,5 +16,23 @@ namespace lab_3
         {
             InitializeComponent();
         }
+
+        //загрузка данных из Excel
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        //построить графики по данным таблицы
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // экстраполяция
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
