@@ -14,7 +14,7 @@ namespace lab_3
     }
     public class Region: Territoriya // класс Регион наследует свойства от абстрактного класса Территория
     {
-        public double N2009;// значение численности по годам
+        public double N2009;// свойства в которых может быть значение численности по годам 
         public double N2010;
         public double N2011;
         public double N2012;
@@ -34,12 +34,12 @@ namespace lab_3
     }
     public class ListRegion
     {
-        public List<Region>regions;
+        public List<Region> regions;
         public void LoadFromExcel()//загрузка данных из Excel
         {
             int rCnt; //количество строк
-            regions = new List<Region>();//
-            regions.Clear();//очищение
+            regions = new List<Region>();//создаем список типа регион
+            regions.Clear();//очищение списка
 
             OpenFileDialog opf = new OpenFileDialog();//открытие окна для выбора файла
             opf.ShowDialog();
@@ -65,10 +65,11 @@ namespace lab_3
                 double Zn2023 = (ExcelRange.Cells[rCnt, 16] as Microsoft.Office.Interop.Excel.Range).Value2;
 
                 // изменение численности за 15 летв процентном соотношении.Последний год минус первый, делим на первый,умнож на100
-                double izm = Math.Round( ((Zn2023 - Zn2009) / Zn2009) * 100,2);
+                double izm = Math.Round(((Zn2023 - Zn2009) / Zn2009) * 100, 2);
 
                 //создание объекта регион сколько строк столько и регионов
                 Region region = new Region();
+                //заполнение свойства объекта регион
                 region.RegionName = (string)(ExcelRange.Cells[rCnt, 1] as Microsoft.Office.Interop.Excel.Range).Value2;
 
                 region.N2009 = Zn2009;
@@ -88,12 +89,46 @@ namespace lab_3
                 region.N2023 = Zn2023;
 
                 region.Pizm = izm;
+                //заполнение свойства объекта регион
 
-                regions.Add(region);
+                regions.Add(region);//добавление объекта регион в список
             }
-            //
             ExcelWorkBook.Close(true, null, null); //закрытие книгу
             ExcelApp.Quit();//закрытие excel
+        }
+
+        public List<Region> copy()//создание списка с двумя строками
+        {
+            List<Region> regionsotr = new List<Region>();//список регионов с отрицательным процентом изменения 
+            List<Region> regionsotr2 = new List<Region>();//список регионов с наименьшим и наибольшим отрицательным процентом изменения
+
+            //перебираем строки списка regions созданного раннее чтобы заполнить другие два списка
+            foreach (Region region in regions)//для каждой строки из заполненного списка регионов 
+            {
+                if (region.Pizm < 0)//проверяем, если процент изменения отрицательный,
+                {
+                    regionsotr.Add(region);//то добавляем строку в новый список где будут храниться строки только с отрицательным значением 
+                }
+                
+            }
+            regionsotr.Sort((x, y) => x.Pizm.CompareTo(y.Pizm));//сортировка списка от наименьшего отрицательного значения к наибольшему
+
+            regionsotr2.Add(regionsotr[0]);//добавляем первую строку из списка в которой хранится наименьшее отрицательное
+            regionsotr2.Add(regions[regionsotr.Count - 1]);//добавляем последнюю строку из списка regionsotr в которой хранится наибольшее отрицательное 
+            return regionsotr2;
+        }
+        public double extrapol(List<double> massEkstp, int Kol)//экстраполяция
+        {
+            double y = 0;
+
+            foreach (var LR in massEkstp)
+            {
+                y = y + LR;
+            }
+
+            y = y / Kol;
+
+            return y;
         }
     }
 
