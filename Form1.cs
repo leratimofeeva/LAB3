@@ -20,7 +20,7 @@ namespace lab_3
         //загрузка данных из Excel
         private void button1_Click(object sender, EventArgs e)
         {
-
+           //156156165165156
         }
 
         //построить графики по данным таблицы
