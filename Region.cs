@@ -34,7 +34,7 @@ namespace lab_3
     }
     public class ListRegion
     {
-        public List<Region> regions;
+        public List<Region> regions; //список regions
         public void LoadFromExcel()//загрузка данных из Excel
         {
             int rCnt; //количество строк
